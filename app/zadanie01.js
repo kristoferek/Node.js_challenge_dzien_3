@@ -1,3 +1,15 @@
-const MY_PWD_HASH = '5dca0fc4e306d92b2077ad85e7c4bd87a3e8648e';
+const { ENCODINGS, HASH_ALGORITHMS, PASSWORDS, MY_PWD_HASH } = require('./constants');
+const { createHmac } = require('crypto')
 
-//Twój kod
+
+const isHashedPassword = (algorithm, password, format) =>
+  createHmac(algorithm, password).digest(format) === MY_PWD_HASH
+
+
+HASH_ALGORITHMS.forEach(algorithm =>
+  PASSWORDS.forEach(password =>
+    ENCODINGS.forEach(format =>
+      isHashedPassword(algorithm, password, format)
+        ? console.log(`'${password}' was hashed using '${algorithm}' algorithm in '${format}' format`)
+        : null
+    )))
